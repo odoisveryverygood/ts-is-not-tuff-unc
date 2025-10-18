@@ -1,0 +1,21 @@
+
+Task #2 — Firebase Integration (Source-only, flat, GitHub-ready)
+
+Included:
+- pubspec.yaml (firebase_core, firebase_auth, cloud_firestore, firebase_messaging)
+- lib/main.dart (Firebase.initializeApp + optional test write)
+- lib/firebase_options.dart (placeholder config)
+- lib/services/firebase_service.dart (Firestore test read/write)
+- .github/workflows/build.yml (unchanged, still valid)
+
+What this CAN do:
+- Compiles and passes CI without real credentials
+- Pre-wires Firebase for easy setup later
+- Lets you upload via GitHub web (drag contents, commit)
+
+What this CANNOT do (your part later, ~45–60 min total):
+- Create Firebase project and download google-services.json (Android) and GoogleService-Info.plist (iOS)
+- Place those two files in android/app/ and ios/Runner/ and commit
+- Optional: run on device to see Firestore 'connected' doc
+
+Next task: #3 RevenueCat subscription setup.
