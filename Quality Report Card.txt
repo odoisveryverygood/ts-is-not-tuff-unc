@@ -1,21 +1,20 @@
-
-Task #2 — Firebase Integration (Source-only, flat, GitHub-ready)
+Task #3 — RevenueCat Setup (Source-only, flat, GitHub-ready)
 
 Included:
-- pubspec.yaml (firebase_core, firebase_auth, cloud_firestore, firebase_messaging)
-- lib/main.dart (Firebase.initializeApp + optional test write)
-- lib/firebase_options.dart (placeholder config)
-- lib/services/firebase_service.dart (Firestore test read/write)
-- .github/workflows/build.yml (unchanged, still valid)
+- pubspec.yaml (adds purchases_flutter ^6.25.0)
+- lib/common/constants.dart (entitlement + offering IDs, placeholder SDK key)
+- lib/services/revenuecat_service.dart (configure, check Pro, purchase, restore)
+- lib/features/settings/settings_screen.dart (Upgrade button + Restore)
 
 What this CAN do:
-- Compiles and passes CI without real credentials
-- Pre-wires Firebase for easy setup later
-- Lets you upload via GitHub web (drag contents, commit)
+- Compiles and passes CI with placeholder key
+- UI shows Free/Pro status; upgrade attempts do nothing until key added
+- Safe to upload via GitHub web (drag contents, commit)
 
-What this CANNOT do (your part later, ~45–60 min total):
-- Create Firebase project and download google-services.json (Android) and GoogleService-Info.plist (iOS)
-- Place those two files in android/app/ and ios/Runner/ and commit
-- Optional: run on device to see Firestore 'connected' doc
+What you do later (~20–30 min one-time):
+- Create project at https://app.revenuecat.com
+- Copy Public SDK Key into RCConstants.publicApiKey
+- Create products/offerings in App Store / Play Console and in RevenueCat
+- Test purchases via TestFlight / Internal testing
 
-Next task: #3 RevenueCat subscription setup.
+Next task: #4 Environment variables + API keys handling.
