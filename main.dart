@@ -1,17 +1,22 @@
-
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
-import 'common/theme/app_theme.dart';
-import 'app_router.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'services/firebase_service.dart';
+import 'services/revenuecat_service.dart';
+import 'providers/subscription_provider.dart';
+import 'ui/login_screen.dart';
+import 'ui/home_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  try { await FirebaseService().testWrite(); } catch (_) {}
-  runApp(const ProviderScope(child: WoofFitApp()));
+  await Firebase.initializeApp(
+    // If you add firebase_options.dart, you can pass options here.
+    // options: DefaultFirebaseOptions.currentPlatform,
+  );
+  await RevenueCatService.init(); // Safe to call early
+
+  runApp(const WoofFitApp());
 }
 
 class WoofFitApp extends StatelessWidget {
@@ -19,10 +24,34 @@ class WoofFitApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      title: 'WoofFit AI',
-      theme: AppTheme.light(),
-      routerConfig: appRouter,
+    return MultiProvider(
+      providers: [
+        StreamProvider<User?>.value(
+          value: FirebaseAuth.instance.authStateChanges(),
+          initialData: null,
+        ),
+        ChangeNotifierProvider(create: (_) => SubscriptionProvider()..bootstrap()),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'WoofFit AI',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFFFF8A00)), // corgi-ish orange
+          useMaterial3: true,
+        ),
+        home: const RootRouter(),
+      ),
     );
+  }
+}
+
+class RootRouter extends StatelessWidget {
+  const RootRouter({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final user = Provider.of<User?>(context);
+    if (user == null) return const LoginScreen();
+    return const HomeScreen();
   }
 }

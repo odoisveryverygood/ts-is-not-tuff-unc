@@ -1,9 +1,1 @@
 include: package:flutter_lints/flutter.yaml
-
-linter:
-  rules:
-    prefer_const_constructors: true
-    avoid_print: true
-    prefer_final_fields: true
-    sort_constructors_first: true
-    use_super_parameters: true

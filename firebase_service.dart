@@ -1,15 +1,20 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class FirebaseService {
-  final _db = FirebaseFirestore.instance;
+  static FirebaseAuth get auth => FirebaseAuth.instance;
+  static FirebaseFirestore get db => FirebaseFirestore.instance;
 
-  Future<void> testWrite() async {
-    await _db.collection('test').doc('status').set({'connected': true});
+  static Future<UserCredential> signInAnon() async {
+    return await auth.signInAnonymously();
   }
 
-  Future<Map<String, dynamic>?> testRead() async {
-    final doc = await _db.collection('test').doc('status').get();
-    return doc.data();
+  static Future<void> saveBasicProfile(User user) async {
+    final ref = db.collection('users').doc(user.uid);
+    await ref.set({
+      'uid': user.uid,
+      'createdAt': FieldValue.serverTimestamp(),
+      'isAnonymous': user.isAnonymous,
+    }, SetOptions(merge: true));
   }
 }
